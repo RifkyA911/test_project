@@ -17,7 +17,7 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 
 export default function Navbar() {
-	const { data: session } = useSession();
+	const { data: session, status } = useSession();
 	const pathname = usePathname();
 
 	if (pathname.includes("/auth/login")) return null;
