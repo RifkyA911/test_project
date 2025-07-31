@@ -79,7 +79,7 @@ const ProductPage: React.FC<ProductProps> = () => {
 	useEffect(() => {
 		const delayInputTimeoutId = setTimeout(() => {
 			setDebouncedInputValue(inputValue);
-		}, 300);
+		}, 1000);
 		return () => clearTimeout(delayInputTimeoutId);
 	}, [inputValue, 500]);
 
@@ -137,11 +137,10 @@ const ProductPage: React.FC<ProductProps> = () => {
 
 	const FormSchema = z.object({
 		id: z.string(),
-		nama: z.string().min(2, {
-			message: "Username must be at least 2 characters.",
-		}),
-		harga: z.string().min(3).max(16),
-		stok: z.string(),
+		nama: z.string().min(1, { message: "Nama Tidak boleh kosong" }),
+		//.min(2, {message: "Username must be at least 2 characters.",}),
+		harga: z.string().min(1, { message: "Harga Tidak boleh kosong" }), //.min(3).max(16),
+		stok: z.string().min(1, { message: "Stok Tidak boleh kosong" }),
 	});
 
 	const form = useForm<z.infer<typeof FormSchema>>({
@@ -157,6 +156,19 @@ const ProductPage: React.FC<ProductProps> = () => {
 	function onSubmit(data: z.infer<typeof FormSchema>) {
 		console.log(data);
 		const getProducts = [...(lists ?? [])];
+		if (!data.nama) {
+			form.setError("nama", { message: "Nama Tidak boleh kosong" });
+			return;
+		}
+		if (!data.harga) {
+			form.setError("harga", { message: "Harga Tidak boleh kosong" });
+			return;
+		}
+		if (!data.stok) {
+			form.setError("stok", { message: "stok Tidak boleh kosong" });
+			return;
+		}
+
 		let checkDuplicateValue = false;
 		if (contextSubmit == "add" && getProducts.length > 0 && data.nama) {
 			getProducts.map((list) => {
@@ -171,6 +183,7 @@ const ProductPage: React.FC<ProductProps> = () => {
 		}
 
 		if (contextSubmit == "add" && checkDuplicateValue) {
+			form.setError("nama", { message: "Nama barang sudah ada" });
 			console.log("⛔ duplicated name value");
 			return;
 		}
@@ -308,7 +321,7 @@ const ProductPage: React.FC<ProductProps> = () => {
 														</FormLabel>
 														<FormControl>
 															<Input
-																required
+																// required
 																placeholder="shadcn"
 																{...field}
 															/>
@@ -327,7 +340,7 @@ const ProductPage: React.FC<ProductProps> = () => {
 														</FormLabel>
 														<FormControl>
 															<Input
-																required
+																// required
 																placeholder="shadcn"
 																{...field}
 															/>
@@ -346,7 +359,7 @@ const ProductPage: React.FC<ProductProps> = () => {
 														</FormLabel>
 														<FormControl>
 															<Input
-																required
+																// required
 																placeholder="shadcn"
 																{...field}
 															/>

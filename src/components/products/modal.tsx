@@ -139,12 +139,14 @@ export const ModalProduct: React.FC<ModalProductProps> = ({
 							<DialogClose asChild>
 								<Button variant="outline">Cancel</Button>
 							</DialogClose>
-							<Button
-								disabled={form.formState.isSubmitting}
-								type="submit"
-							>
-								Save changes
-							</Button>
+							<DialogClose asChild>
+								<Button
+									disabled={form.formState.isSubmitting}
+									type="submit"
+								>
+									Save changes
+								</Button>
+							</DialogClose>
 						</DialogFooter>
 					</form>
 				</Form>
